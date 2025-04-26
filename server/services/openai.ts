@@ -109,41 +109,41 @@ export async function analyzeDocument(text: string): Promise<AnalysisResult> {
       result.aiAnalysis = { keyInsights: [], strengths: [], challenges: [] };
     }
     
-    // Ensure metadata fields aren't empty
+    // Ensure metadata fields aren't empty with generic fallbacks
     if (!result.title || result.title.trim() === '') {
-      result.title = 'Developing a Parliamentary Chatbot based on Microsoft Fabric & Azure OpenAI';
+      result.title = 'Unknown RFP Title';
     }
     
     if (!result.agency || result.agency.trim() === '') {
-      result.agency = 'Council of Representatives – Kingdom of Bahrain';
+      result.agency = 'Not specified';
     }
     
     if (!result.rfpNumber || result.rfpNumber.trim() === '') {
-      result.rfpNumber = 'RFP-Nawab D2/2024';
+      result.rfpNumber = 'N/A';
     }
     
     if (!result.dueDate || result.dueDate.trim() === '') {
-      result.dueDate = 'Check e-Tendering portal';
+      result.dueDate = 'Not specified';
     }
     
     if (!result.contactPerson || result.contactPerson.trim() === '') {
-      result.contactPerson = 'Jassim Algannas, Director IT & Farooq A. Aziz, Head IS/AI';
+      result.contactPerson = 'Not specified';
     }
     
     if (!result.estimatedValue || result.estimatedValue.trim() === '') {
-      result.estimatedValue = 'Not specified in document (likely > $1M)';
+      result.estimatedValue = 'Not specified';
     }
     
     if (!result.contractTerm || result.contractTerm.trim() === '') {
-      result.contractTerm = 'Refer to e-Tendering portal';
+      result.contractTerm = 'Not specified';
     }
     
     // Ensure we have at least one key date
     if (!result.keyDates || !Array.isArray(result.keyDates) || result.keyDates.length === 0) {
       result.keyDates = [
         { 
-          event: 'Refer to the electronic tendering system for all dates and deadlines', 
-          date: 'See portal', 
+          event: 'No specific dates found in document', 
+          date: 'N/A', 
           icon: 'question',
           passed: false 
         }
