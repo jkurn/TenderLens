@@ -1,5 +1,11 @@
 # TenderLens
 
+## Problem
+Public-sector suppliers and consultancies waste huge chunks of time combing dozens of scattered tender portals, parsing dense, jargon-laden RFP documents, and still miss winnable opportunities; this slow, manual, error-prone process costs them revenue, burns staff hours, and often means they find out too late to craft a competitive bid.
+
+## Solution
+TenderLens: RFP Market Researcher Agent Public-sector suppliers and consultancies waste huge chunks of time combing dozens of scattered tender portals, parsing dense, jargon-laden RFP documents, and still miss winnable opportunities; this slow, manual, error-prone process costs them revenue, burns staff hours, and often means they find out too late to craft a competitive bid.
+
 TenderLens is a modern web application built with React, Express, and TypeScript, designed to help users manage and analyze tender documents efficiently. The application features a robust frontend with beautiful UI components and a powerful backend for document processing and analysis.
 
 ## 🚀 Features
