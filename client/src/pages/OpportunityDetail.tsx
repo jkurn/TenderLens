@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { getOpportunityRating, getOpportunityColor } from "@/lib/types";
+import { getOpportunityRating, getOpportunityColor, nullSafeOpportunityScore } from "@/lib/types";
 import { DocumentResults } from "@/components/DocumentResults";
 import { OriginalDocument } from "@/components/OriginalDocument";
 
@@ -261,13 +261,13 @@ export default function OpportunityDetail() {
               {document.opportunityScore !== undefined && (
                 <div className="flex items-center gap-2 ml-2 pl-2 border-l">
                   <div className={cn("h-10 w-10 rounded-full flex items-center justify-center text-white font-medium", 
-                    document.opportunityScore >= 70 ? "bg-success" : 
-                    document.opportunityScore >= 40 ? "bg-warning" : "bg-destructive"
+                    nullSafeOpportunityScore(document.opportunityScore) >= 70 ? "bg-success" : 
+                    nullSafeOpportunityScore(document.opportunityScore) >= 40 ? "bg-warning" : "bg-destructive"
                   )}>
-                    {document.opportunityScore}
+                    {nullSafeOpportunityScore(document.opportunityScore)}
                   </div>
                   <div className="text-sm">
-                    <p className="font-medium">{getOpportunityRating(document.opportunityScore || 0)}</p>
+                    <p className="font-medium">{getOpportunityRating(nullSafeOpportunityScore(document.opportunityScore))}</p>
                     <p className="text-neutral-600">Opportunity</p>
                   </div>
                 </div>
