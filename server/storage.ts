@@ -2,6 +2,8 @@ import {
   users, type User, type InsertUser,
   documents, type Document, type InsertDocument 
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // User methods
@@ -16,69 +18,58 @@ export interface IStorage {
   listDocuments(): Promise<Document[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private documents: Map<number, Document>;
-  private userCurrentId: number;
-  private documentCurrentId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.documents = new Map();
-    this.userCurrentId = 1;
-    this.documentCurrentId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userCurrentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   // Document methods
   async getDocument(id: number): Promise<Document | undefined> {
-    return this.documents.get(id);
+    const [document] = await db.select().from(documents).where(eq(documents.id, id));
+    return document || undefined;
   }
 
   async createDocument(insertDocument: InsertDocument): Promise<Document> {
-    const id = this.documentCurrentId++;
     const now = new Date();
-    const document: Document = { 
-      ...insertDocument,
-      id,
-      uploadedAt: now,
-      processed: false
-    };
-    this.documents.set(id, document);
+    const [document] = await db
+      .insert(documents)
+      .values({
+        ...insertDocument,
+        uploadedAt: now,
+        processed: false
+      })
+      .returning();
     return document;
   }
 
   async updateDocument(id: number, updates: Partial<Document>): Promise<Document | undefined> {
-    const document = this.documents.get(id);
-    if (!document) {
-      return undefined;
-    }
-    
-    const updatedDocument = { ...document, ...updates };
-    this.documents.set(id, updatedDocument);
-    return updatedDocument;
+    const [document] = await db
+      .update(documents)
+      .set(updates)
+      .where(eq(documents.id, id))
+      .returning();
+    return document || undefined;
   }
 
   async listDocuments(): Promise<Document[]> {
-    return Array.from(this.documents.values());
+    return db.select().from(documents);
   }
 }
 
-export const storage = new MemStorage();
+// Use DatabaseStorage instead of MemStorage
+export const storage = new DatabaseStorage();
