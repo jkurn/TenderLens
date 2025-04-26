@@ -77,7 +77,7 @@ const RequirementsTab = ({ document }: { document: Document }) => (
         <h2 className="text-lg font-medium text-neutral-900">Requirements</h2>
         <Badge variant="outline">
           {document.requirements ? 
-            (document.requirements.technical.length + document.requirements.qualifications.length) : 0} Total
+            ((document.requirements.technical?.length || 0) + (document.requirements.qualifications?.length || 0)) : 0} Total
         </Badge>
       </div>
       <Button variant="outline" className="flex items-center gap-2">
@@ -91,12 +91,12 @@ const RequirementsTab = ({ document }: { document: Document }) => (
         <div className="flex justify-between items-center">
           <CardTitle>Technical Requirements</CardTitle>
           <Badge variant="outline" className="ml-2">
-            {document.requirements?.technical.length || 0}
+            {document.requirements?.technical?.length || 0}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
-        {document.requirements?.technical && document.requirements.technical.length > 0 ? (
+        {document.requirements?.technical && document.requirements.technical?.length > 0 ? (
           <ul className="space-y-3">
             {document.requirements.technical.map((req, index) => (
               <li key={index} className="p-3 bg-neutral-50 rounded-md border border-neutral-200">
@@ -122,12 +122,12 @@ const RequirementsTab = ({ document }: { document: Document }) => (
         <div className="flex justify-between items-center">
           <CardTitle>Qualification Requirements</CardTitle>
           <Badge variant="outline" className="ml-2">
-            {document.requirements?.qualifications.length || 0}
+            {document.requirements?.qualifications?.length || 0}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
-        {document.requirements?.qualifications && document.requirements.qualifications.length > 0 ? (
+        {document.requirements?.qualifications && document.requirements.qualifications?.length > 0 ? (
           <ul className="space-y-3">
             {document.requirements.qualifications.map((req, index) => (
               <li key={index} className="p-3 bg-neutral-50 rounded-md border border-neutral-200">
