@@ -71,7 +71,7 @@ export function OriginalDocument({ document }: OriginalDocumentProps) {
           </DialogHeader>
           <div className="overflow-auto h-full">
             <pre className="text-sm whitespace-pre-wrap text-neutral-700 p-4">
-              {document.fullText}
+              {document.fullText || 'Full document text not available'}
             </pre>
           </div>
         </DialogContent>

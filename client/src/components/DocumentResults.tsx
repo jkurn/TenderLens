@@ -107,13 +107,13 @@ export function DocumentResults({ document }: DocumentResultsProps) {
             <h3 className="text-lg font-medium text-neutral-900 mb-3">Key Dates</h3>
             <div className="bg-neutral-100 rounded-lg p-4">
               <div className="relative">
-                {document.keyDates.map((date, index) => (
+                {(document.keyDates || []).map((date, index) => (
                   <div key={index} className="mb-4 last:mb-0 flex items-start">
                     <div className="flex flex-col items-center mr-4">
                       <div className={`h-6 w-6 rounded-full ${date.passed ? 'bg-primary' : 'bg-warning'} text-white flex items-center justify-center text-xs`}>
                         {getKeyDateIcon(date.icon)}
                       </div>
-                      {index < document.keyDates.length - 1 && (
+                      {index < (document.keyDates?.length || 0) - 1 && (
                         <div className="h-full w-0.5 bg-primary mt-1"></div>
                       )}
                     </div>
@@ -134,7 +134,7 @@ export function DocumentResults({ document }: DocumentResultsProps) {
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-lg font-medium text-neutral-900">Key Requirements</h3>
               <span className="text-sm text-neutral-700">
-                {document.requirements.technical.length + document.requirements.qualifications.length} requirements found
+                {((document.requirements.technical?.length || 0) + (document.requirements.qualifications?.length || 0))} requirements found
               </span>
             </div>
             
@@ -151,11 +151,16 @@ export function DocumentResults({ document }: DocumentResultsProps) {
                   </Button>
                 </div>
                 <ul className="space-y-2">
-                  {document.requirements.technical.slice(0, 3).map((req, index) => (
+                  {(document.requirements.technical || []).slice(0, 3).map((req, index) => (
                     <li key={index} className="bg-white p-3 rounded border-l-4 border-primary shadow-sm">
                       <p className="text-neutral-900">{req}</p>
                     </li>
                   ))}
+                  {!document.requirements.technical?.length && (
+                    <li className="bg-white p-3 rounded text-neutral-500 text-center">
+                      <p>No technical requirements found</p>
+                    </li>
+                  )}
                 </ul>
               </div>
               
@@ -171,11 +176,16 @@ export function DocumentResults({ document }: DocumentResultsProps) {
                   </Button>
                 </div>
                 <ul className="space-y-2">
-                  {document.requirements.qualifications.slice(0, 2).map((req, index) => (
+                  {(document.requirements.qualifications || []).slice(0, 2).map((req, index) => (
                     <li key={index} className="bg-white p-3 rounded border-l-4 border-warning shadow-sm">
                       <p className="text-neutral-900">{req}</p>
                     </li>
                   ))}
+                  {!document.requirements.qualifications?.length && (
+                    <li className="bg-white p-3 rounded text-neutral-500 text-center">
+                      <p>No qualification requirements found</p>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -190,12 +200,15 @@ export function DocumentResults({ document }: DocumentResultsProps) {
               <div className="bg-white rounded border border-neutral-200 p-4">
                 <h4 className="font-medium text-neutral-900 mb-2">Key Insights</h4>
                 <ul className="space-y-2 text-neutral-900">
-                  {document.aiAnalysis.keyInsights.map((insight, index) => (
+                  {(document.aiAnalysis.keyInsights || []).map((insight, index) => (
                     <li key={index} className="flex items-start">
                       <LightbulbIcon className="text-warning mt-1 mr-2 h-4 w-4" />
                       <span>{insight}</span>
                     </li>
                   ))}
+                  {!document.aiAnalysis.keyInsights?.length && (
+                    <li className="text-neutral-500">No key insights available</li>
+                  )}
                 </ul>
               </div>
               
@@ -203,24 +216,30 @@ export function DocumentResults({ document }: DocumentResultsProps) {
                 <div className="bg-white rounded border border-neutral-200 p-4">
                   <h4 className="font-medium text-neutral-900 mb-2">Strengths</h4>
                   <ul className="space-y-1 text-neutral-900">
-                    {document.aiAnalysis.strengths.map((strength, index) => (
+                    {(document.aiAnalysis.strengths || []).map((strength, index) => (
                       <li key={index} className="flex items-start">
                         <CheckCircle2 className="text-success mt-1 mr-2 h-4 w-4" />
                         <span>{strength}</span>
                       </li>
                     ))}
+                    {!document.aiAnalysis.strengths?.length && (
+                      <li className="text-neutral-500">No strengths identified</li>
+                    )}
                   </ul>
                 </div>
                 
                 <div className="bg-white rounded border border-neutral-200 p-4">
                   <h4 className="font-medium text-neutral-900 mb-2">Challenges</h4>
                   <ul className="space-y-1 text-neutral-900">
-                    {document.aiAnalysis.challenges.map((challenge, index) => (
+                    {(document.aiAnalysis.challenges || []).map((challenge, index) => (
                       <li key={index} className="flex items-start">
                         <AlertCircle className="text-error mt-1 mr-2 h-4 w-4" />
                         <span>{challenge}</span>
                       </li>
                     ))}
+                    {!document.aiAnalysis.challenges?.length && (
+                      <li className="text-neutral-500">No challenges identified</li>
+                    )}
                   </ul>
                 </div>
               </div>

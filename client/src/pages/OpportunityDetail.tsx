@@ -26,129 +26,142 @@ import { DocumentResults } from "@/components/DocumentResults";
 import { OriginalDocument } from "@/components/OriginalDocument";
 
 // This will be updated in future PR
-const ExplainerTab = ({ document }: { document: Document }) => (
-  <div className="space-y-6">
-    <Card>
-      <CardHeader>
-        <CardTitle>Project Overview</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-neutral-700">
-          {document.aiAnalysis?.keyInsights?.[0] || 
-            "AI analysis will generate a detailed project overview here."}
-        </p>
-      </CardContent>
-    </Card>
-    
-    <Card>
-      <CardHeader>
-        <CardTitle>Core Objectives</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="list-disc pl-5 space-y-2 text-neutral-700">
-          {document.aiAnalysis?.keyInsights?.slice(1, 3).map((insight, index) => (
-            <li key={index}>{insight}</li>
-          )) || (
-            <li>AI analysis will extract the key objectives from the RFP document.</li>
-          )}
-        </ul>
-      </CardContent>
-    </Card>
-    
-    <Card>
-      <CardHeader>
-        <CardTitle>Scope of Work</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-neutral-700">
-          {document.aiAnalysis?.keyInsights?.[3] || 
-            "The AI will summarize the scope of work based on the RFP requirements."}
-        </p>
-      </CardContent>
-    </Card>
-  </div>
-);
+const ExplainerTab = ({ document }: { document: Document }) => {
+  // Safely extract insights
+  const keyInsights = document.aiAnalysis?.keyInsights || [];
+  
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Project Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-neutral-700">
+            {keyInsights[0] || "AI analysis will generate a detailed project overview here."}
+          </p>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Core Objectives</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5 space-y-2 text-neutral-700">
+            {keyInsights.length > 1 ? (
+              keyInsights.slice(1, 3).map((insight, index) => (
+                <li key={index}>{insight}</li>
+              ))
+            ) : (
+              <li>AI analysis will extract the key objectives from the RFP document.</li>
+            )}
+          </ul>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Scope of Work</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-neutral-700">
+            {keyInsights[3] || "The AI will summarize the scope of work based on the RFP requirements."}
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 // This will be updated in future PR
-const RequirementsTab = ({ document }: { document: Document }) => (
-  <div className="space-y-6">
-    <div className="flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <h2 className="text-lg font-medium text-neutral-900">Requirements</h2>
-        <Badge variant="outline">
-          {document.requirements ? 
-            ((document.requirements.technical?.length || 0) + (document.requirements.qualifications?.length || 0)) : 0} Total
-        </Badge>
+const RequirementsTab = ({ document }: { document: Document }) => {
+  // Safely extract arrays with complete null checking
+  const technicalReqs = document.requirements?.technical || [];
+  const qualificationReqs = document.requirements?.qualifications || [];
+  
+  // Calculate totals
+  const totalRequirements = technicalReqs.length + qualificationReqs.length;
+  
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-medium text-neutral-900">Requirements</h2>
+          <Badge variant="outline">
+            {totalRequirements} Total
+          </Badge>
+        </div>
+        <Button variant="outline" className="flex items-center gap-2">
+          <FileCog className="h-4 w-4" />
+          Generate Requirements
+        </Button>
       </div>
-      <Button variant="outline" className="flex items-center gap-2">
-        <FileCog className="h-4 w-4" />
-        Generate Requirements
-      </Button>
+      
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-center">
+            <CardTitle>Technical Requirements</CardTitle>
+            <Badge variant="outline" className="ml-2">
+              {technicalReqs.length}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {technicalReqs.length > 0 ? (
+            <ul className="space-y-3">
+              {technicalReqs.map((req, index) => (
+                <li key={index} className="p-3 bg-neutral-50 rounded-md border border-neutral-200">
+                  <div className="flex justify-between">
+                    <div className="flex-1">{req}</div>
+                    <Badge className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-100">PENDING</Badge>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="text-center py-8 text-neutral-500">
+              <ListChecks className="h-12 w-12 mx-auto mb-4 text-neutral-300" />
+              <p>No technical requirements extracted yet</p>
+              <p className="text-sm">Generate requirements to extract from the document</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-center">
+            <CardTitle>Qualification Requirements</CardTitle>
+            <Badge variant="outline" className="ml-2">
+              {qualificationReqs.length}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {qualificationReqs.length > 0 ? (
+            <ul className="space-y-3">
+              {qualificationReqs.map((req, index) => (
+                <li key={index} className="p-3 bg-neutral-50 rounded-md border border-neutral-200">
+                  <div className="flex justify-between">
+                    <div className="flex-1">{req}</div>
+                    <Badge className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-100">PENDING</Badge>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="text-center py-8 text-neutral-500">
+              <ListChecks className="h-12 w-12 mx-auto mb-4 text-neutral-300" />
+              <p>No qualification requirements extracted yet</p>
+              <p className="text-sm">Generate requirements to extract from the document</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
-    
-    <Card>
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
-          <CardTitle>Technical Requirements</CardTitle>
-          <Badge variant="outline" className="ml-2">
-            {document.requirements?.technical?.length || 0}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        {document.requirements?.technical && document.requirements.technical?.length > 0 ? (
-          <ul className="space-y-3">
-            {document.requirements.technical.map((req, index) => (
-              <li key={index} className="p-3 bg-neutral-50 rounded-md border border-neutral-200">
-                <div className="flex justify-between">
-                  <div className="flex-1">{req}</div>
-                  <Badge className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-100">PENDING</Badge>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="text-center py-8 text-neutral-500">
-            <ListChecks className="h-12 w-12 mx-auto mb-4 text-neutral-300" />
-            <p>No technical requirements extracted yet</p>
-            <p className="text-sm">Generate requirements to extract from the document</p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-    
-    <Card>
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
-          <CardTitle>Qualification Requirements</CardTitle>
-          <Badge variant="outline" className="ml-2">
-            {document.requirements?.qualifications?.length || 0}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        {document.requirements?.qualifications && document.requirements.qualifications?.length > 0 ? (
-          <ul className="space-y-3">
-            {document.requirements.qualifications.map((req, index) => (
-              <li key={index} className="p-3 bg-neutral-50 rounded-md border border-neutral-200">
-                <div className="flex justify-between">
-                  <div className="flex-1">{req}</div>
-                  <Badge className="ml-2 bg-amber-100 text-amber-800 hover:bg-amber-100">PENDING</Badge>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="text-center py-8 text-neutral-500">
-            <ListChecks className="h-12 w-12 mx-auto mb-4 text-neutral-300" />
-            <p>No qualification requirements extracted yet</p>
-            <p className="text-sm">Generate requirements to extract from the document</p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  </div>
-);
+  );
+};
 
 export default function OpportunityDetail() {
   const { id } = useParams<{ id: string }>();
