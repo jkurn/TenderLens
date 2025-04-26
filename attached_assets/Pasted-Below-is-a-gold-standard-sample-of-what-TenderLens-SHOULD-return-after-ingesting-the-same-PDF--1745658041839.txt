@@ -1,0 +1,105 @@
+Below is a **“gold-standard” sample of what TenderLens SHOULD return** after ingesting the same PDF.  
+I’ve laid it out exactly in the order your current UI shows, so you can compare field-by-field and see where extraction / scoring logic needs work.
+
+---
+
+## 1. Opportunity Card  
+
+| **Opportunity Score** | **72 / 100 (Good Match)** |  
+|-----------------------|---------------------------|  
+| Rationale (top 3 drivers) | • Exact match on *Microsoft Fabric + Azure OpenAI* capability<br>• Contract value likely > US $1 M (chatbot + data-platform scope)<br>• No incumbent mentioned → open field |
+
+---
+
+## 2. Document Summary  
+
+| Field | Extracted Value | Source anchor |
+|-------|-----------------|---------------|
+| **Issuing Agency** | Council of Representatives – Kingdom of Bahrain | Cover page |
+| **RFP Number** | RFP-Nawab D2/2024 | Cover page |
+| **Title** | “Developing a Parliamentary Chatbot based on Microsoft Fabric & Azure OpenAI” | Cover page |
+| **Due Date** | *Check e-Tendering portal* (not printed in PDF) | p. 2 “Refer to the electronic tendering system…” |
+| **Contract Term** | Stated in portal (period not in PDF) | p. 2 |
+| **Estimated Value** | -- | none |
+| **Contact People** | • Jassim Algannas, Director IT – jalgannas@nuwab.bh – +973 1774 8722<br>• Farooq A. Aziz, Head IS/AI – f.abdulaziz@nuwab.bh – +973 1774 8779 | Appendix |
+| **Delivery Location** | Manama, Bahrain (on-site + Azure tenant) | implicit |
+
+---
+
+## 3. Key Requirements (auto-clustered)
+
+### Technical  
+| # | Requirement |
+|---|-------------|
+| 1 | Establish unified data repository on **Microsoft Fabric** with seamless AWS ingestion |
+| 2 | Develop **Q&A chatbot** drawing from Fabric data; real-time updates |
+| 3 | Build **law-comparison tool** using **Azure OpenAI** language models |
+| 4 | Provide future-data-source integration framework |
+| 5 | Test, deploy, maintain; deliver training & documentation |
+
+### Qualification / Compliance  
+| # | Requirement |
+|---|-------------|
+| A | Gold-tier **Microsoft Partner** in *Data & AI, Digital & App Innovation, Business Apps* |
+| B | Proof of expertise: AI, Application Integration, Big Data, Chatbot, Data Warehouse, Power BI |
+| C | Submit Bahrainization certificate & valid Commercial Registration |
+| D | SME classification certificate (if applicable) |
+| E | Financial statements & recent turnovers |
+
+*(Requirements are mapped to the exact check-boxes in Appendix 1–3 and surfaced as “Must / Should / Nice” tags.)*
+
+---
+
+## 4. AI Analysis  
+
+| Section | Content |
+|---------|---------|
+| **Key Insights** | • Bahrain’s parliament wants a single source of truth on Microsoft Fabric – strong Azure footprint.<br>• They explicitly call for Fabric-to-AWS data sync → positions vendors with multi-cloud skills.<br>• Law-comparison tool hints at multilingual NLP (Arabic + English). |
+| **Strengths for *YourCompany*** | • Azure OpenAI early-access partner.<br>• Past chatbot deployments in GCC public sector.<br>• Have ISO 27001 & local-hosting option (meets data-sovereignty). |
+| **Challenges / Risks** | • Mandatory on-site presence or local partner (Bahrainization).<br>• Gold-tier Microsoft certifications are a hard gate.<br>• Unclear budget - need Q&A to confirm funding envelope. |
+| **Next Actions** | 1. Verify tender closing date on Bahrain e-Tender portal.<br>2. Pull our Fabric reference project one-pager into proposal library.<br>3. Identify Bahrain-registered delivery partner to satisfy localization rules. |
+
+---
+
+## 5. Requirement Tracker Snapshot  
+
+| Status | Count | % |
+|--------|-------|---|
+| **Met** | 8 | 62 % |
+| **Partially Met** | 3 | 23 % |
+| **Unmet / Needs Partner** | 2 | 15 % |
+
+(Heat bar + pie appear in UI; each requirement is auto-linked to a suggested boiler-plate answer or prompts SME assignment.)
+
+---
+
+## 6. Suggested Boiler-plate Inserts  
+
+*Click-to-insert cards shown in right-hand “AI Assist” drawer.*
+
+| Snippet | Match score |
+|---------|-------------|
+| Data-Lake-on-Fabric architecture diagram | 0.92 |
+| GCC-compliant Chatbot Governance SOP | 0.87 |
+| Law-comparison demo video link | 0.81 |
+
+---
+
+## 7. Why your current output is blank & how to fix
+
+| Failure point | Likely cause | Quick remediation |
+|---------------|-------------|-------------------|
+| **0/0 fields captured** | PDF cover uses images; your extractor only reads text | Add OCR fallback (tesseract) + language detection (Arabic/English). |
+| **No requirements** | Parser not drilling into bullet tables | Switch to hierarchical chunking (heading-based) then look for “Appendix”, “Requirements”, Y/N tables. |
+| **Score = 0** | Scoring engine divides by 0 when fields missing | Add null-safe defaults and weight on extracted vs. profile keywords. |
+
+---
+
+### Deliverable for the dev team
+
+*Unit test:*  
+`assert parsed_rfp.rfp_number == "RFP-Nawab D2/2024"`  
+`assert "Q&A chatbot" in parsed_rfp.key_requirements`  
+`assert parsed_rfp.contact_people[0].email == "jalgannas@nuwab.bh"`
+
+When all three pass, the UI should render like the screenshot above instead of the empty shell you saw today.
