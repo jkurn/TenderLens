@@ -25,3 +25,11 @@ export function getOpportunityColor(score: number): string {
   if (score < 80) return 'text-accent';
   return 'text-success';
 }
+
+// Custom badge variants for use with shadcn ui
+export type CustomBadgeVariants = 'default' | 'destructive' | 'outline' | 'secondary' | 'success' | 'warning';
+
+// Helper for null checking opportunity score
+export function nullSafeOpportunityScore(score: number | null | undefined): number {
+  return score === null || score === undefined ? 0 : score;
+}

@@ -1,0 +1,62 @@
+### What the screenshots tell us about the competitor’s user-flow  
+
+| Stage | Key UI elements & actions you can see | What it enables the user to do | Observed friction / gaps |
+|-------|---------------------------------------|--------------------------------|---------------------------|
+| **1 — Opportunity intake** | *Opportunities* tab → “+ New Opportunity” button. Each record opens on a **tabbed workspace** (Details / Documents / Explainer / Requirements / Final Submission). | Creates a single, persistent workspace per tender and keeps the journey linear. | Manual creation only (no bulk import / API ingest visible). |
+| **2 — Tender understanding** | **Details** tab shows description, customer name, release / close dates, status, assignees.<br>**Explainer** tab houses a long-form, AI-generated “Tender Explainer” (Project overview › Core objectives › Scope of work). | Rapid context building for the BD or proposal team. | Explainer is static text; cannot see comment threads or versioning. |
+| **3 — Requirement extraction** | “Generate requirements” modal → progress bars for **Step 1: Generating requirements** & **Step 2: Computing embeddings**. | Fully-automated requirements mining from the RFP. | No user-tunable extraction controls (e.g., pick sections, filter by must/should). |
+| **4 — Requirement triage** | **Requirements** tab list view: <br>• Red/amber/green status chips (“APPROVED / PENDING APPROVAL / STRONG / NOT MET”).<br>• Completion progress bar & assignment pie (20 % assigned).<br>• “Extract from Document”, “Add Requirement” buttons.<br>• Inline search & filters (Assignee, Category, Status). | Gives a Kanban-style progress tracker and collaborative ownership. | Status taxonomy is fixed; no weighting of requirements or probabilistic score. |
+| **5 — Responding** | Requirement detail panel: rich-text response field, **Answer with AI** button, reviewers & assignees dropdowns, evidence uploader. A right-hand **AI chat side-car** suggests improved copy and can “Copy to Response”. | Tight write-review loop with generative assistance and source-linking. | Lacks structured “win theme” tips or cost/LOE calculators; chat UI is cramped for long threads. |
+| **6 — Content reuse** | *Response Library* menu stores Q&A pairs, searchable by question; single “Import” button. | Institutional memory of past answers. | Only question/answer pairs; cannot store whole boilerplate sections or pricing schedules. |
+| **7 — Customer tracking** | *Customers* tab lists agencies with counts of open / closed-won / closed-lost and Win Rate column. | Quick pipeline health snapshot. | No drill-down into reasons for loss or competitor intel. |
+
+---
+
+### Capabilities worth emulating
+
+1. **Single-page tabbed workspace** keeps users oriented; every step is one click away.  
+2. **AI-generated “Tender Explainer”** acts as a lightweight brief for execs.  
+3. **Automated requirement extraction + RAG status** eliminates the “Ctrl-F marathon.”  
+4. **Per-requirement AI responder** accelerates drafting and ensures style consistency.  
+5. **Evidence attachment & reviewer routing** bakes in compliance checks.  
+6. **Completion/assignment dashboards** create accountability at a glance.  
+
+---
+
+### Gaps & improvement opportunities for **TenderLens**
+
+| Gap in competitor | How TenderLens can leapfrog |
+|-------------------|-----------------------------|
+| RFP ingest is manual | **API / email-forward & watch-list ingest** → auto-populate workspaces as soon as a tender drops. |
+| Extraction is opaque | Add **configurable extraction profiles** (reg-compliance, tech, commercials) & show confidence scores. |
+| Static explainer | Make explainer **live & collaborative** (inline comments, tasks, Figma-like cursor presence). |
+| Requirement weighting is binary | Introduce a **win-probability score per requirement** (ease vs. impact matrix). |
+| Chat side-car is cramped | Surface AI assistance in a **full-height drawer with version diff & style presets**. |
+| Limited boilerplate reuse | Offer a **snippet library with variables** (company _name_, project _name_), plus auto-suggest similar past answers. |
+| No cost / LOE calculus | Embed a **quick estimator widget** (hours × rate, BOM) feeding into the price schedule. |
+| No competitor / incumbent insights | Fuse in **award-history & incumbent-performance panels** next to each requirement. |
+| Customer tab is flat | Build a **customer intelligence page**: spend trends, decision committee map, preferred contract vehicles. |
+
+---
+
+### Recommended **TenderLens** user-flow (MVP+)
+
+1. **AUTO-IMPORT**  
+   *Tender found on portal* → webhook triggers workspace creation with meta pre-filled.
+
+2. **QUICK-VIEW**  
+   Left drawer = RFP metadata. Center = live explainer (editable). Right drawer = conversation / notes.
+
+3. **DEEP DIVE**  
+   “Analyse” → choose extraction profile → requirements table with sortable **Fit %**, **Win Risk**, mandatory flags.
+
+4. **COLLAB RESPONSE**  
+   • Assign owners & SLA.<br>• AI draft button (uses company tone + boilerplate).<br>• Inline cost estimator.<br>• Evidence link picker.
+
+5. **PROGRESS & GOVERNANCE**  
+   Dashboards by deal, customer, vertical. Export to CRM + shareable PDF of compliance matrix.
+
+6. **SUBMIT & LEARN**  
+   One-click e-submission packaging; post-mortem module captures outcome + lessons → feeds active-learning model.
+
+This flow keeps everything users liked in the competitor while adding automation, intelligence, and governance layers that directly attack the “time-sink & missed-opportunity” pain you framed in the PRD.
